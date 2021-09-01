@@ -1,9 +1,9 @@
 LaundryBot
 
 esphome:
- name: laundrybot
- platform: ESP32
- board: featheresp32
+ name: kitchensensor
+ platform: esp8266
+ board: d1_mini
 
 wifi:
  ssid: 'network-id'
@@ -17,18 +17,26 @@ ota:
 
 binary_sensor:
  - platform: status
-   name: "LaundryBot"
+   name: "Dish Washer"
  - platform: gpio
-   pin: GPIO13
+   pin: D2
    name: "washer"
    device_class: vibration
    filters:
    - delayed_on: 10ms
    - delayed_off: 5min
- - platform: gpio
-   pin: GPIO33
-   name: "dryer"
-   device_class: vibration
-   filters:
-   - delayed_on: 10ms
-   - delayed_off: 5min
+
+  - platform: gpio
+    pin: D2
+    name: "Kitchen Motion Sensor"
+    device_class: motion
+
+sensor:
+  - platform: dht
+    pin: D5
+    model: DHT11
+    temperature:
+      name: "Temperature Kitchen"
+    humidity:
+      name: "Humidity Kitchen"
+    update_interval: 60s
